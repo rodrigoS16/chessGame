@@ -5,13 +5,18 @@
         public int Lines { get; set; }
         public int Columns { get; set; }
 
-        public Piece[,] Pieces { get; set; }
+        private Piece[,] _Pieces;
 
-        public ChessBoard(int lines, int columns, Piece[,] pieces)
+        public ChessBoard(int lines, int columns)
         {
             Lines = lines;
             Columns = columns;
-            Pieces = new Piece[Lines,Columns];
+            _Pieces = new Piece[Lines,Columns];
+        }
+
+        public Piece GetPiece(int lines, int columns)
+        {
+            return _Pieces[lines, columns];
         }
     }
 }

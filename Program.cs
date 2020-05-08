@@ -1,4 +1,5 @@
-﻿using System;
+﻿using jogo_xadres_console.Tabuleiro;
+using System;
 
 namespace jogo_xadres_console
 {
@@ -6,7 +7,9 @@ namespace jogo_xadres_console
     {
         static void Main(string[] args)
         {
-            
+            ChessBoard          chessBoard = new ChessBoard(8,8);
+
+            ChessScreen.PrintChessBoard(chessBoard);
         }
     }
 }
