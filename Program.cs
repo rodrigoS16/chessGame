@@ -6,7 +6,7 @@ namespace jogo_xadres_console
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            
         }
     }
 }
