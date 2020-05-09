@@ -24,5 +24,10 @@ namespace jogo_xadres_console.Tabuleiro
             Position = null;
             QtdMoviments = 0;
         }
+
+        public void IncreaseMovement()
+        {
+            QtdMoviments++;
+        }
     }
 }

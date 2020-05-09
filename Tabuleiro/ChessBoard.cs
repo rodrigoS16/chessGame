@@ -42,6 +42,20 @@ namespace jogo_xadres_console.Tabuleiro
             _Pieces[piece.Position.Line, piece.Position.Column] = piece;            
         }
 
+        public Piece RemovePiece(Position pos)
+        {
+            Piece piece = null;
+
+            if (GetPiece(pos) != null)
+            {
+                piece = _Pieces[pos.Line, pos.Column];
+                _Pieces[piece.Position.Line, piece.Position.Column] = null;
+
+                piece.Position = null;
+            }
+            return piece;
+        }
+
         public bool IsPositionValid(Position    pos)
         {
             bool ret = true;

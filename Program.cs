@@ -9,16 +9,26 @@ namespace jogo_xadres_console
     {
         static void Main(string[] args)
         {
-            ChessBoard          chessBoard = new ChessBoard(8,8);
+            
 
             try
             {
-                chessBoard.PutNewPiece(new TowerPiece(chessBoard, Tabuleiro.Enums.Color.Black), new Position(0, 0));
-                chessBoard.PutNewPiece(new TowerPiece(chessBoard, Tabuleiro.Enums.Color.Black), new Position(1, 3));
-                chessBoard.PutNewPiece(new KingPiece(chessBoard, Tabuleiro.Enums.Color.Black), new Position(0, 2));
+                ChessMatch match = new ChessMatch();
                 
+                while (!match.IsOver)
+                {
+                    Console.Clear();
+                    ChessScreen.PrintChessBoard(match.Tab);
 
-                ChessScreen.PrintChessBoard(chessBoard);
+                    Console.WriteLine();
+                    Console.Write("Origem: ");
+                    Position orig = ChessScreen.ReadChessPosition().ToPosition();
+                    Console.Write("Destino: ");
+                    Position dest = ChessScreen.ReadChessPosition().ToPosition();
+
+                    match.ProcessPieceMovement(orig, dest);
+                }
+                
 
                 Console.WriteLine();
                 //ChessPosition pos = new ChessPosition('c', 7);
