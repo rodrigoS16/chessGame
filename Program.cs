@@ -21,9 +21,9 @@ namespace jogo_xadres_console
                 ChessScreen.PrintChessBoard(chessBoard);
 
                 Console.WriteLine();
-                ChessPosition pos = new ChessPosition('c', 7);
-                Console.WriteLine(pos);
-                Console.WriteLine(pos.ToPosition());
+                //ChessPosition pos = new ChessPosition('c', 7);
+                //Console.WriteLine(pos);
+                //Console.WriteLine(pos.ToPosition());
             }
             catch (ChessBoardException e)
             {

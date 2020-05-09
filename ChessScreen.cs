@@ -1,4 +1,5 @@
-﻿using jogo_xadres_console.Tabuleiro;
+﻿using Chess;
+using jogo_xadres_console.Tabuleiro;
 using System;
 
 namespace jogo_xadres_console
@@ -9,19 +10,55 @@ namespace jogo_xadres_console
         {
             for (int idxLine = 0; idxLine < board.Lines; idxLine++)
             {
+                Console.Write( 8 - idxLine + " ");
                 for (int idxColumn = 0; idxColumn < board.Columns; idxColumn++)
                 {
                     if (board.GetPiece(idxLine,idxColumn) != null)
                     {
-                        Console.Write($"{board.GetPiece(idxLine, idxColumn).ToString()} ");
+                        PrintPiece(board.GetPiece(idxLine, idxColumn));
                     }
                     else
                     {
                         Console.Write("- ");
                     }
                 }
-                Console.WriteLine();
+                Console.WriteLine();                
             }
+            Console.WriteLine("  A B C D E F G H");
+        }
+
+        public static void PrintPiece( Piece piece)
+        {
+            ConsoleColor aux = Console.ForegroundColor;            
+
+            switch (piece.Color)
+            {
+                case Tabuleiro.Enums.Color.White:
+                    Console.ForegroundColor = aux;
+                    break;
+
+                case Tabuleiro.Enums.Color.Black:                    
+                    Console.ForegroundColor = ConsoleColor.Magenta;                    
+                    break;
+
+                case Tabuleiro.Enums.Color.Gray:
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+                case Tabuleiro.Enums.Color.Yellow:
+                    Console.ForegroundColor = ConsoleColor.Yellow;                    
+                    break;
+                case Tabuleiro.Enums.Color.Red:
+                    Console.ForegroundColor = ConsoleColor.Red;                    
+                    break;
+                case Tabuleiro.Enums.Color.Green:
+                    Console.ForegroundColor = ConsoleColor.Green;                    
+                    break;
+                case Tabuleiro.Enums.Color.Orange:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    break;
+            }            
+            Console.Write($"{piece.ToString()} ");
+            Console.ForegroundColor = aux;
         }
     }
 }

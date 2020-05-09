@@ -12,6 +12,7 @@ namespace Chess
             Column = column;
             Line = line;
         }
+        
 
         public Position ToPosition()
         {
