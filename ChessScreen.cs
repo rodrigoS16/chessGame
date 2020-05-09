@@ -13,7 +13,7 @@ namespace jogo_xadres_console
                 {
                     if (board.GetPiece(idxLine,idxColumn) != null)
                     {
-                        Console.Write($"{board.GetPiece(idxLine, idxColumn).Position} ");
+                        Console.Write($"{board.GetPiece(idxLine, idxColumn).ToString()} ");
                     }
                     else
                     {

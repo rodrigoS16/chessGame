@@ -7,14 +7,13 @@ namespace jogo_xadres_console.Tabuleiro
         public Color Color { get; set; }
         public int QtdMoviments { get; protected set; }
 
-        public Position Position { get; protected set; }        
+        public Position Position { get; set; }        
 
         public ChessBoard ChessBoard { get; protected set; }
 
-        public Piece(Color color, Position position, ChessBoard chessBoard)
+        public Piece(ChessBoard chessBoard, Color color)
         {
-            Color = color;            
-            Position = position;
+            Color = color;                        
             ChessBoard = chessBoard;
 
             this.init();
@@ -22,6 +21,7 @@ namespace jogo_xadres_console.Tabuleiro
 
         public void init()
         {
+            Position = null;
             QtdMoviments = 0;
         }
     }
