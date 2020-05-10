@@ -36,7 +36,35 @@ namespace jogo_xadres_console.Tabuleiro
         {
             QtdMoviments++;
         }
+        
+        public bool ExistsPossibleMoviments()
+        {
+            bool[,] mat = PossibleMoviments();
+            bool ret = false;
 
-        public abstract bool[,] PossibleMoviments(Position  pos = null);        
+            for (int idxL = 0; idxL < ChessBoard.Lines; idxL++)
+            {
+                for (int idxC = 0; idxC < ChessBoard.Columns; idxC++)
+                {
+                    ret = mat[idxL, idxC];
+                    if (ret)
+                    {
+                        break;
+                    }
+                }
+                if (ret)
+                {
+                    break;
+                }
+            }
+            return ret;
+        }
+
+        public bool CanMoveTo(Position pos)
+        {
+            return PossibleMoviments()[pos.Line, pos.Column];
+        }
+
+        public abstract bool[,] PossibleMoviments(Position pos = null);
     }
 }
