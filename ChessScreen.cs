@@ -105,6 +105,11 @@ namespace jogo_xadres_console
             Console.WriteLine();
             Console.WriteLine($"Turno: {match.Turn}");
             Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
+
+            if (match.IsInCheck)
+            {
+                Console.WriteLine("VOCÊ ESTA EM CHECK");
+            }
         }
 
         public static void PrintCapturedPiecesCollection(HashSet<Piece>     piecesCollection)

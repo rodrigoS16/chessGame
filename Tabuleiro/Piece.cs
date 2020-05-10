@@ -36,7 +36,11 @@ namespace jogo_xadres_console.Tabuleiro
         {
             QtdMoviments++;
         }
-        
+        public void DecreaseMovement()
+        {
+            QtdMoviments--;
+        }
+
         public bool ExistsPossibleMoviments()
         {
             bool[,] mat = PossibleMoviments();
