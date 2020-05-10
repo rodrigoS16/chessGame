@@ -16,6 +16,11 @@ namespace jogo_xadres_console.Tabuleiro
             _Pieces = new Piece[Lines,Columns];
         }
 
+        private void CheckFailed(string msg)
+        {
+            throw new ChessBoardException(msg);
+        }
+
         public Piece GetPiece(int lines, int columns)
         {
             return _Pieces[lines, columns];
@@ -35,7 +40,7 @@ namespace jogo_xadres_console.Tabuleiro
         {
             if (ExistsPiece(pos))
             {
-                throw new ChessBoardException("Já existe uma peça nesta posição!");
+                CheckFailed("Já existe uma peça nesta posição!");
             }
             //f (piece.PossibleMoviments(pos)[pos.Line, pos.Column] == true)
             {
@@ -77,7 +82,7 @@ namespace jogo_xadres_console.Tabuleiro
         {
             if (!IsPositionValid(pos))
             {
-                throw new ChessBoardException("Posição inválida!");
+                CheckFailed("Posição inválida!");
             }
         }
     }

@@ -28,26 +28,42 @@ namespace Chess
         }
         private void InitChessBoard()
         {
-            /*
-            PieceMovement('c', 1, new TowerPiece(ChessBoard, Color.White, true));
-            PieceMovement('c', 2, new TowerPiece(ChessBoard, Color.White, true));
-            PieceMovement('d', 2, new TowerPiece(ChessBoard, Color.White, true));
-            PieceMovement('e', 2, new TowerPiece(ChessBoard, Color.White, true));
-            PieceMovement('e', 1, new TowerPiece(ChessBoard, Color.White, true));
-            PieceMovement('d', 1, new KingPiece(ChessBoard, Color.White, true));
+                        
+            PieceMovement('a', 1, new TowerPiece(ChessBoard, Color.White, true));
+            PieceMovement('b', 1, new HorsePiece(ChessBoard, Color.White, true));
+            PieceMovement('c', 1, new BishopPiece(ChessBoard, Color.White, true));
+            PieceMovement('d', 1, new QueenPiece(ChessBoard, Color.White, true));
+            PieceMovement('e', 1, new KingPiece(ChessBoard, Color.White, true));
+            PieceMovement('f', 1, new BishopPiece(ChessBoard, Color.White, true));
+            PieceMovement('g', 1, new HorsePiece(ChessBoard,  Color.White, true));
+            PieceMovement('h', 1, new TowerPiece(ChessBoard,  Color.White, true));
 
-            PieceMovement('c', 8, new TowerPiece(ChessBoard, Color.Black));
-            PieceMovement('c', 7, new TowerPiece(ChessBoard, Color.Black));
-            PieceMovement('d', 7, new TowerPiece(ChessBoard, Color.Black));
-            PieceMovement('e', 7, new TowerPiece(ChessBoard, Color.Black));
-            PieceMovement('e', 8, new TowerPiece(ChessBoard, Color.Black));
-            PieceMovement('d', 8, new KingPiece(ChessBoard, Color.Black));
-            */
-            PieceMovement('b', 8, new TowerPiece(ChessBoard, Color.Black));            
-            PieceMovement('a', 8, new KingPiece(ChessBoard, Color.Black));
-            PieceMovement('h', 7, new TowerPiece(ChessBoard, Color.White,true));
-            PieceMovement('c', 1, new TowerPiece(ChessBoard, Color.White, true));
-            PieceMovement('d', 1, new KingPiece(ChessBoard, Color.White, true));
+            PieceMovement('a', 2, new SoldierPiece(ChessBoard, Color.White, true));
+            PieceMovement('b', 2, new SoldierPiece(ChessBoard, Color.White, true));
+            PieceMovement('c', 2, new SoldierPiece(ChessBoard, Color.White, true));
+            PieceMovement('d', 2, new SoldierPiece(ChessBoard, Color.White, true));
+            PieceMovement('e', 2, new SoldierPiece(ChessBoard, Color.White, true));
+            PieceMovement('f', 2, new SoldierPiece(ChessBoard, Color.White, true));
+            PieceMovement('g', 2, new SoldierPiece(ChessBoard,  Color.White, true));
+            PieceMovement('h', 2, new SoldierPiece(ChessBoard,  Color.White, true));
+
+            PieceMovement('a', 8, new TowerPiece(ChessBoard, Color.Black));
+            PieceMovement('b', 8, new HorsePiece(ChessBoard, Color.Black));
+            PieceMovement('c', 8, new BishopPiece(ChessBoard, Color.Black));
+            PieceMovement('d', 8, new QueenPiece(ChessBoard, Color.Black));
+            PieceMovement('e', 8, new KingPiece(ChessBoard, Color.Black));
+            PieceMovement('f', 8, new BishopPiece(ChessBoard, Color.Black));
+            PieceMovement('g', 8, new HorsePiece(ChessBoard, Color.Black));
+            PieceMovement('h', 8, new TowerPiece(ChessBoard, Color.Black));
+
+            PieceMovement('a', 7, new SoldierPiece(ChessBoard, Color.Black));
+            PieceMovement('b', 7, new SoldierPiece(ChessBoard, Color.Black));
+            PieceMovement('c', 7, new SoldierPiece(ChessBoard, Color.Black));
+            PieceMovement('d', 7, new SoldierPiece(ChessBoard, Color.Black));
+            PieceMovement('e', 7, new SoldierPiece(ChessBoard, Color.Black));
+            PieceMovement('f', 7, new SoldierPiece(ChessBoard, Color.Black));
+            PieceMovement('g', 7, new SoldierPiece(ChessBoard, Color.Black));
+            PieceMovement('h', 7, new SoldierPiece(ChessBoard, Color.Black));
         }
 
         private void Init()
