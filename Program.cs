@@ -23,6 +23,12 @@ namespace jogo_xadres_console
                     Console.WriteLine();
                     Console.Write("Origem: ");
                     Position orig = ChessScreen.ReadChessPosition().ToPosition();
+                    bool[,] possibleMovements = match.Tab.GetPiece(orig).PossibleMoviments();
+
+
+                    Console.Clear();
+                    ChessScreen.PrintChessBoard(match.Tab, possibleMovements);
+                    Console.WriteLine();
                     Console.Write("Destino: ");
                     Position dest = ChessScreen.ReadChessPosition().ToPosition();
 

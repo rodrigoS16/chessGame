@@ -2,10 +2,12 @@
 
 namespace jogo_xadres_console.Tabuleiro
 {
-    class Piece
+    abstract class Piece
     {        
         public Color Color { get; set; }
         public int QtdMoviments { get; protected set; }
+
+        protected bool InverseSearch;
 
         public Position Position { get; set; }        
 
@@ -14,9 +16,14 @@ namespace jogo_xadres_console.Tabuleiro
         public Piece(ChessBoard chessBoard, Color color)
         {
             Color = color;                        
-            ChessBoard = chessBoard;
+            ChessBoard = chessBoard;            
 
             this.init();
+        }
+
+        public Piece(ChessBoard chessBoard, Color color, bool inverseSearch = false) : this(chessBoard,color)
+        {
+            InverseSearch = inverseSearch;
         }
 
         public void init()
@@ -29,5 +36,7 @@ namespace jogo_xadres_console.Tabuleiro
         {
             QtdMoviments++;
         }
+
+        public abstract bool[,] PossibleMoviments(Position  pos = null);        
     }
 }

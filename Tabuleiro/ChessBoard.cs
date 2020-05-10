@@ -37,9 +37,11 @@ namespace jogo_xadres_console.Tabuleiro
             {
                 throw new ChessBoardException("Já existe uma peça nesta posição!");
             }
-
-            piece.Position = pos;
-            _Pieces[piece.Position.Line, piece.Position.Column] = piece;            
+            //f (piece.PossibleMoviments(pos)[pos.Line, pos.Column] == true)
+            {
+                piece.Position = pos;
+                _Pieces[piece.Position.Line, piece.Position.Column] = piece;
+            }
         }
 
         public Piece RemovePiece(Position pos)

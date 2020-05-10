@@ -12,17 +12,30 @@ namespace jogo_xadres_console
             {
                 Console.Write( 8 - idxLine + " ");
                 for (int idxColumn = 0; idxColumn < board.Columns; idxColumn++)
-                {
-                    if (board.GetPiece(idxLine,idxColumn) != null)
-                    {
-                        PrintPiece(board.GetPiece(idxLine, idxColumn));
-                    }
-                    else
-                    {
-                        Console.Write("- ");
-                    }
+                {                    
+                    PrintPiece(board.GetPiece(idxLine, idxColumn));                    
                 }
                 Console.WriteLine();                
+            }
+            Console.WriteLine("  A B C D E F G H");
+        }
+        public static void PrintChessBoard(ChessBoard board, bool[,] possibleMovements)
+        {
+            ConsoleColor aux = Console.BackgroundColor;
+
+            for (int idxLine = 0; idxLine < board.Lines; idxLine++)
+            {
+                Console.Write(8 - idxLine + " ");
+                for (int idxColumn = 0; idxColumn < board.Columns; idxColumn++)
+                {
+                    if (possibleMovements[idxLine, idxColumn])
+                    {
+                        Console.BackgroundColor = ConsoleColor.DarkCyan;                        
+                    }
+                    PrintPiece(board.GetPiece(idxLine, idxColumn));
+                    Console.BackgroundColor = aux;
+                }
+                Console.WriteLine();
             }
             Console.WriteLine("  A B C D E F G H");
         }
@@ -39,36 +52,43 @@ namespace jogo_xadres_console
 
         public static void PrintPiece( Piece piece)
         {
-            ConsoleColor aux = Console.ForegroundColor;            
+            ConsoleColor aux = Console.ForegroundColor;
 
-            switch (piece.Color)
+            if (piece == null)
             {
-                case Tabuleiro.Enums.Color.White:
-                    Console.ForegroundColor = aux;
-                    break;
+                Console.Write("- ");
+            }
+            else
+            {
+                switch (piece.Color)
+                {
+                    case Tabuleiro.Enums.Color.White:
+                        Console.ForegroundColor = aux;
+                        break;
 
-                case Tabuleiro.Enums.Color.Black:                    
-                    Console.ForegroundColor = ConsoleColor.Magenta;                    
-                    break;
+                    case Tabuleiro.Enums.Color.Black:
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        break;
 
-                case Tabuleiro.Enums.Color.Gray:
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    break;
-                case Tabuleiro.Enums.Color.Yellow:
-                    Console.ForegroundColor = ConsoleColor.Yellow;                    
-                    break;
-                case Tabuleiro.Enums.Color.Red:
-                    Console.ForegroundColor = ConsoleColor.Red;                    
-                    break;
-                case Tabuleiro.Enums.Color.Green:
-                    Console.ForegroundColor = ConsoleColor.Green;                    
-                    break;
-                case Tabuleiro.Enums.Color.Orange:
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    break;
-            }            
-            Console.Write($"{piece.ToString()} ");
-            Console.ForegroundColor = aux;
+                    case Tabuleiro.Enums.Color.Gray:
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        break;
+                    case Tabuleiro.Enums.Color.Yellow:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        break;
+                    case Tabuleiro.Enums.Color.Red:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        break;
+                    case Tabuleiro.Enums.Color.Green:
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        break;
+                    case Tabuleiro.Enums.Color.Orange:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        break;
+                }
+                Console.Write($"{piece} ");
+                Console.ForegroundColor = aux;
+            }
         }
     }
 }

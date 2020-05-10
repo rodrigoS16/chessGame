@@ -19,10 +19,13 @@ namespace Chess
 
         public void ProcessPieceMovement(Position orig, Position dest)
         {
-            Piece piece = Tab.RemovePiece(orig);
-            piece.IncreaseMovement();
-            Piece pieceCaptured = Tab.RemovePiece(dest);
-            Tab.PutNewPiece(piece, dest);
+            if (Tab.GetPiece(orig).PossibleMoviments()[dest.Line, dest.Column] == true)
+            {
+                Piece piece = Tab.RemovePiece(orig);
+                piece.IncreaseMovement();
+                Piece pieceCaptured = Tab.RemovePiece(dest);
+                Tab.PutNewPiece(piece, dest);
+            }
         }
 
         private void Init()
@@ -37,12 +40,12 @@ namespace Chess
         private void InitChessBoard()
         {
             // init white pieces
-            Tab.PutNewPiece(new TowerPiece(Tab, Color.White), new ChessPosition('c', 1).ToPosition());
-            Tab.PutNewPiece(new TowerPiece(Tab, Color.White), new ChessPosition('c', 2).ToPosition());
-            Tab.PutNewPiece(new TowerPiece(Tab, Color.White), new ChessPosition('d', 2).ToPosition());
-            Tab.PutNewPiece(new TowerPiece(Tab, Color.White), new ChessPosition('e', 2).ToPosition());
-            Tab.PutNewPiece(new TowerPiece(Tab, Color.White), new ChessPosition('e', 1).ToPosition());
-            Tab.PutNewPiece(new KingPiece(Tab, Color.White), new ChessPosition('d', 1).ToPosition());
+            Tab.PutNewPiece(new TowerPiece(Tab, Color.White,true), new ChessPosition('c', 1).ToPosition());
+            Tab.PutNewPiece(new TowerPiece(Tab, Color.White,true), new ChessPosition('c', 2).ToPosition());
+            Tab.PutNewPiece(new TowerPiece(Tab, Color.White,true), new ChessPosition('d', 2).ToPosition());
+            Tab.PutNewPiece(new TowerPiece(Tab, Color.White,true), new ChessPosition('e', 2).ToPosition());
+            Tab.PutNewPiece(new TowerPiece(Tab, Color.White,true), new ChessPosition('e', 1).ToPosition());
+            Tab.PutNewPiece(new KingPiece(Tab, Color.White,true), new ChessPosition('d', 1).ToPosition());
 
             //init black pieces
             Tab.PutNewPiece(new TowerPiece(Tab, Color.Black), new ChessPosition('c', 8).ToPosition());
