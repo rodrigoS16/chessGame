@@ -27,7 +27,8 @@ namespace Chess
             CurrentPlayer = CurrentPlayer == Color.White ? Color.Black : Color.White;
         }
         private void InitChessBoard()
-        {            
+        {
+            /*
             PieceMovement('c', 1, new TowerPiece(ChessBoard, Color.White, true));
             PieceMovement('c', 2, new TowerPiece(ChessBoard, Color.White, true));
             PieceMovement('d', 2, new TowerPiece(ChessBoard, Color.White, true));
@@ -41,6 +42,12 @@ namespace Chess
             PieceMovement('e', 7, new TowerPiece(ChessBoard, Color.Black));
             PieceMovement('e', 8, new TowerPiece(ChessBoard, Color.Black));
             PieceMovement('d', 8, new KingPiece(ChessBoard, Color.Black));
+            */
+            PieceMovement('b', 8, new TowerPiece(ChessBoard, Color.Black));            
+            PieceMovement('a', 8, new KingPiece(ChessBoard, Color.Black));
+            PieceMovement('h', 7, new TowerPiece(ChessBoard, Color.White,true));
+            PieceMovement('c', 1, new TowerPiece(ChessBoard, Color.White, true));
+            PieceMovement('d', 1, new KingPiece(ChessBoard, Color.White, true));
         }
 
         private void Init()
@@ -126,11 +133,53 @@ namespace Chess
             }
 
             IsInCheck = CheckKingInCheck(GetOpponent(CurrentPlayer));
+
+            IsOver = IsCheckMate(GetOpponent(CurrentPlayer));
+
             Turn++;
 
             ChangePlayer();
+        }
 
+        public Color GetWinner()
+        {
+            return GetOpponent(CurrentPlayer);
+        }
 
+        public bool IsCheckMate(Color color)
+        {
+            bool ret = CheckKingInCheck(color);
+
+            if (ret)
+            {
+                foreach (Piece obj in PiecesInMatch(color))
+                {
+                    bool[,] mat = obj.PossibleMoviments();
+
+                    for (int idxL = 0; idxL < ChessBoard.Lines; idxL++)
+                    {
+                        for (int idxC = 0; idxC < ChessBoard.Columns; idxC++)
+                        {
+                            Position dest = new Position(idxL, idxC);
+                            Position orig = obj.Position;   
+
+                            if (ChessBoard.GetPiece(orig).PossibleMoviments()[dest.Line, dest.Column])                            
+                            {
+                                Piece piece = ProcessPieceMovement(orig, dest);
+
+                                ret = CheckKingInCheck(color);
+                                UndoneMovement(orig, dest, piece);
+
+                                if (!ret)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return ret;
         }
 
         public void ValidatePieceMovementFrom(Position pos)

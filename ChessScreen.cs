@@ -104,11 +104,23 @@ namespace jogo_xadres_console
             PrintCapturedPieces(match);
             Console.WriteLine();
             Console.WriteLine($"Turno: {match.Turn}");
-            Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
 
-            if (match.IsInCheck)
+            if (!match.IsOver)
             {
-                Console.WriteLine("VOCÊ ESTA EM CHECK");
+                Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
+
+                if (match.IsInCheck)
+                {
+                    Console.WriteLine("VOCÊ ESTA EM CHECK");
+                }
+            }
+            else
+            {
+                StringBuilder builder = new StringBuilder();
+                builder.AppendLine("XEQUEMATE!");
+                builder.AppendLine($"VENCEDOR: {match.GetWinner()}");
+
+                Console.WriteLine(builder.ToString());
             }
         }
 

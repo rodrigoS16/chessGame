@@ -45,7 +45,8 @@ namespace jogo_xadres_console
                         Console.ReadLine();
                     }
                 }
-
+                Console.Clear();
+                ChessScreen.PrintChessMath(match);
 
                 Console.WriteLine();
             }
