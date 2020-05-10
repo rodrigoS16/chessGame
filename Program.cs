@@ -20,10 +20,7 @@ namespace jogo_xadres_console
                     try
                     {
                         Console.Clear();
-                        ChessScreen.PrintChessBoard(match.ChessBoard);
-                        Console.WriteLine();
-                        Console.WriteLine($"Turno: {match.Turn}");
-                        Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
+                        ChessScreen.PrintChessMath(match);
 
                         Console.WriteLine();
                         Console.Write("Origem: ");
@@ -40,7 +37,7 @@ namespace jogo_xadres_console
                         Position dest = ChessScreen.ReadChessPosition().ToPosition();
                         match.ValidatePieceMovementTo(orig,dest);
 
-                        match.ProcessPieceMovement(orig, dest);
+                        match.ExecutePieceMovement(orig, dest);
                     }
                     catch(ChessBoardException e)
                     {

@@ -1,6 +1,9 @@
 ﻿using Chess;
 using jogo_xadres_console.Tabuleiro;
+using jogo_xadres_console.Tabuleiro.Enums;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace jogo_xadres_console
 {
@@ -60,35 +63,85 @@ namespace jogo_xadres_console
             }
             else
             {
-                switch (piece.Color)
-                {
-                    case Tabuleiro.Enums.Color.White:
-                        Console.ForegroundColor = aux;
-                        break;
-
-                    case Tabuleiro.Enums.Color.Black:
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        break;
-
-                    case Tabuleiro.Enums.Color.Gray:
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                        break;
-                    case Tabuleiro.Enums.Color.Yellow:
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        break;
-                    case Tabuleiro.Enums.Color.Red:
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        break;
-                    case Tabuleiro.Enums.Color.Green:
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        break;
-                    case Tabuleiro.Enums.Color.Orange:
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        break;
-                }
+                SetPieceForeground(piece.Color);
                 Console.Write($"{piece} ");
                 Console.ForegroundColor = aux;
             }
+        }
+        public static void SetPieceForeground(Color     color)
+        {
+            switch (color)
+            {
+                case Color.White:                    
+                    break;
+
+                case Color.Black:
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    break;
+
+                case Color.Gray:
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+                case Color.Yellow:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case Color.Red:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case Color.Green:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case Color.Orange:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    break;
+            }
+        }
+
+        public static void PrintChessMath(ChessMatch match)
+        {
+            PrintChessBoard(match.ChessBoard);
+            Console.WriteLine();
+            PrintCapturedPieces(match);
+            Console.WriteLine();
+            Console.WriteLine($"Turno: {match.Turn}");
+            Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
+        }
+
+        public static void PrintCapturedPiecesCollection(HashSet<Piece>     piecesCollection)
+        {
+            StringBuilder builder = new StringBuilder();
+            bool firstRound = true;
+
+            builder.Append("[");
+            foreach (Piece obj   in piecesCollection)
+            {
+                if (!firstRound)
+                {
+                    builder.Append(" , ");
+                }
+                firstRound = false;
+                builder.Append(obj);                
+            }
+            builder.Append("]");
+            Console.WriteLine(builder.ToString());
+        }
+
+        public static void PrintCapturedPieces(ChessMatch   match)
+        {
+            ConsoleColor aux = Console.ForegroundColor;
+
+            Console.WriteLine("Peças capturadas:");
+
+            Console.Write("Branca: ");
+            SetPieceForeground(Color.White);
+            PrintCapturedPiecesCollection(match.PiecesCaptured(Color.White));
+            Console.ForegroundColor = aux;
+
+            Console.WriteLine();
+            Console.Write("Preta: ");
+            SetPieceForeground(Color.Black);
+            PrintCapturedPiecesCollection(match.PiecesCaptured(Color.Black));
+            Console.ForegroundColor = aux;
         }
     }
 }
