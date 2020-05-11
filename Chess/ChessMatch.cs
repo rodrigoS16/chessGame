@@ -196,6 +196,21 @@ namespace Chess
                 CheckFailed("Você não pode se colocar em xeque! ");
             }
 
+            piece = ChessBoard.GetPiece(dest);
+            //#Special Promotion
+            if (piece is SoldierPiece
+                && ((piece as SoldierPiece).GetInverseSearch() && dest.Line == 0 
+                    || !(piece as SoldierPiece).GetInverseSearch() && dest.Line == 7))
+            {
+                piece = ChessBoard.RemovePiece(dest);
+                _Pieces.Remove(piece);
+
+                Piece queenPiece = new QueenPiece(ChessBoard, piece.Color);
+                ChessBoard.PutNewPiece(queenPiece, dest);
+                _Pieces.Add(queenPiece);
+
+            }
+
             IsInCheck = CheckKingInCheck(GetOpponent(CurrentPlayer));
 
             IsOver = IsCheckMate(GetOpponent(CurrentPlayer));
@@ -203,8 +218,7 @@ namespace Chess
             Turn++;
 
             ChangePlayer();
-
-            piece = ChessBoard.GetPiece(dest);
+            
             //#Special player EnPassant
             if (piece is SoldierPiece && 
                 (orig.Line == dest.Line + 2 || orig.Line == dest.Line - 2))
