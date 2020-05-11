@@ -5,10 +5,18 @@ namespace Chess
 {
     class TowerPiece : Piece
     {
+        private ChessMatch _Match;
 
-        public TowerPiece(ChessBoard chessBoard, Color color, bool inverseSearch = false) : base(chessBoard, color, inverseSearch)
+        public TowerPiece(ChessBoard chessBoard, Color color, ChessMatch match, bool inverseSearch = false) : base(chessBoard, color, inverseSearch)
         {
+            _Match = match;
+        }
 
+        private bool IsEnableToRock(Position pos)
+        {
+            Piece piece = ChessBoard.GetPiece(pos);
+
+            return piece != null && piece is KingPiece && piece.QtdMoviments == 0 && piece.Color == Color;
         }
 
         public override string ToString()
@@ -111,7 +119,37 @@ namespace Chess
                         break;
                     }
                 }
-            }            
+            }
+            //#SpecialPlay - roque
+            if (QtdMoviments == 0 && !_Match.IsInCheck)
+            {
+                Position kingPosition = new Position(Position.Line, Position.Column - 3);
+                Position testPos1 = new Position(Position.Line, Position.Column - 2);
+                Position testPos2 = new Position(Position.Line, Position.Column - 1);
+
+                if (IsEnableToRock(kingPosition)
+                    && ChessBoard.GetPiece(testPos1) == null
+                    && ChessBoard.GetPiece(testPos2) == null)
+                {
+                    mat[testPos1.Line, testPos1.Column] = true;
+                }
+            }
+            //#SpecialPlay - roque grande
+            if (QtdMoviments == 0 && !_Match.IsInCheck)
+            {
+                Position kingPosition = new Position(Position.Line, Position.Column + 4);
+                Position testPos1 = new Position(Position.Line, Position.Column + 1);
+                Position testPos2 = new Position(Position.Line, Position.Column + 2);
+                Position testPos3 = new Position(Position.Line, Position.Column + 3);
+
+                if (IsEnableToRock(kingPosition)
+                    && ChessBoard.GetPiece(testPos1) == null
+                    && ChessBoard.GetPiece(testPos2) == null
+                    && ChessBoard.GetPiece(testPos3) == null)
+                {
+                    mat[testPos3.Line, testPos3.Column] = true;
+                }
+            }
             return mat;
         }
     }

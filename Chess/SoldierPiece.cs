@@ -21,7 +21,7 @@ namespace Chess
         {
             Position position;
 
-            if (Position.Line != idxL && Position.Column != idxC)
+            //if (Position.Line != idxL && Position.Column != idxC)
             {
                 position = new Position(idxL, idxC);
 

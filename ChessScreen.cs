@@ -4,11 +4,13 @@ using jogo_xadres_console.Tabuleiro.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Tabuleiro.Exception;
 
 namespace jogo_xadres_console
 {
     class ChessScreen
-    {
+    {        
+
         public static void PrintChessBoard(ChessBoard board)
         {
             for (int idxLine = 0; idxLine < board.Lines; idxLine++)
@@ -46,6 +48,11 @@ namespace jogo_xadres_console
         public static ChessPosition ReadChessPosition()
         {
             string s = Console.ReadLine();
+            if (string.IsNullOrEmpty(s)
+                || string.IsNullOrWhiteSpace(s))
+            {
+                throw new ChessBoardException("Dados digitados são invalidos");
+            }
             char column = s[0];
 
             int line = int.Parse(s[1].ToString());

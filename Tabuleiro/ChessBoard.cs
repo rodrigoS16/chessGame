@@ -23,11 +23,17 @@ namespace jogo_xadres_console.Tabuleiro
 
         public Piece GetPiece(int lines, int columns)
         {
-            return _Pieces[lines, columns];
+            Piece piece = null;
+
+            if (IsPositionValid(new Position(lines,columns)))
+            {
+                piece = _Pieces[lines, columns];
+            }
+            return piece;
         }
         public Piece GetPiece(Position  pos)
         {
-            return GetPiece(pos.Line, pos.Column);
+            return GetPiece(pos.Line, pos.Column);            
         }
 
         public bool ExistsPiece(Position pos)

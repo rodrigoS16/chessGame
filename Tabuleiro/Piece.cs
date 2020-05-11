@@ -11,7 +11,7 @@ namespace jogo_xadres_console.Tabuleiro
 
         public Position Position { get; set; }        
 
-        public ChessBoard ChessBoard { get; protected set; }
+        public ChessBoard ChessBoard { get; protected set; }        
 
         public Piece(ChessBoard chessBoard, Color color)
         {

@@ -1,6 +1,7 @@
 ﻿using jogo_xadres_console.Tabuleiro;
 using jogo_xadres_console.Tabuleiro.Enums;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Tabuleiro.Exception;
 
 namespace Chess
@@ -29,14 +30,14 @@ namespace Chess
         private void InitChessBoard()
         {
                         
-            PieceMovement('a', 1, new TowerPiece(ChessBoard, Color.White, true));
+            PieceMovement('a', 1, new TowerPiece(ChessBoard, Color.White, this, true));
             PieceMovement('b', 1, new HorsePiece(ChessBoard, Color.White, true));
             PieceMovement('c', 1, new BishopPiece(ChessBoard, Color.White, true));
             PieceMovement('d', 1, new QueenPiece(ChessBoard, Color.White, true));
-            PieceMovement('e', 1, new KingPiece(ChessBoard, Color.White, true));
+            PieceMovement('e', 1, new KingPiece(ChessBoard, Color.White,this, true));
             PieceMovement('f', 1, new BishopPiece(ChessBoard, Color.White, true));
             PieceMovement('g', 1, new HorsePiece(ChessBoard,  Color.White, true));
-            PieceMovement('h', 1, new TowerPiece(ChessBoard,  Color.White, true));
+            PieceMovement('h', 1, new TowerPiece(ChessBoard,  Color.White, this, true));
 
             PieceMovement('a', 2, new SoldierPiece(ChessBoard, Color.White, true));
             PieceMovement('b', 2, new SoldierPiece(ChessBoard, Color.White, true));
@@ -47,14 +48,14 @@ namespace Chess
             PieceMovement('g', 2, new SoldierPiece(ChessBoard,  Color.White, true));
             PieceMovement('h', 2, new SoldierPiece(ChessBoard,  Color.White, true));
 
-            PieceMovement('a', 8, new TowerPiece(ChessBoard, Color.Black));
+            PieceMovement('a', 8, new TowerPiece(ChessBoard, Color.Black, this));
             PieceMovement('b', 8, new HorsePiece(ChessBoard, Color.Black));
             PieceMovement('c', 8, new BishopPiece(ChessBoard, Color.Black));
             PieceMovement('d', 8, new QueenPiece(ChessBoard, Color.Black));
-            PieceMovement('e', 8, new KingPiece(ChessBoard, Color.Black));
+            PieceMovement('e', 8, new KingPiece(ChessBoard, Color.Black,this));
             PieceMovement('f', 8, new BishopPiece(ChessBoard, Color.Black));
             PieceMovement('g', 8, new HorsePiece(ChessBoard, Color.Black));
-            PieceMovement('h', 8, new TowerPiece(ChessBoard, Color.Black));
+            PieceMovement('h', 8, new TowerPiece(ChessBoard, Color.Black, this));
 
             PieceMovement('a', 7, new SoldierPiece(ChessBoard, Color.Black));
             PieceMovement('b', 7, new SoldierPiece(ChessBoard, Color.Black));
@@ -135,6 +136,27 @@ namespace Chess
                 _PiecesCaptured.Remove(capturedPiece);
             }
             ChessBoard.PutNewPiece(piece, orig);
+
+            if (piece is KingPiece &&
+                (orig.Column + 2 == dest.Column))
+            {
+                //Piece towerPiece = ChessBoard.GetPiece();
+                Position towerPositionOrig = new Position(orig.Line, orig.Column + 3);
+                Position towerPositionDest = new Position(orig.Line, orig.Column + 1);
+                Piece towerPiece = ChessBoard.RemovePiece(towerPositionDest);
+                towerPiece.DecreaseMovement();
+                ChessBoard.PutNewPiece(towerPiece, towerPositionOrig);
+
+            }
+            if (piece is KingPiece &&
+                (orig.Column - 2 == dest.Column))
+            {
+                Position towerPositionOrig = new Position(orig.Line, orig.Column - 4);
+                Position towerPositionDest = new Position(orig.Line, orig.Column - 1);
+                Piece towerPiece = ChessBoard.RemovePiece(towerPositionDest);
+                towerPiece.DecreaseMovement();
+                ChessBoard.PutNewPiece(towerPiece, towerPositionOrig);
+            }
         }
 
         public void ExecutePieceMovement(Position orig, Position dest)
@@ -232,7 +254,24 @@ namespace Chess
 
             if (ChessBoard.GetPiece(orig).PossibleMoviments()[dest.Line, dest.Column] == true)
             {
-                Piece piece = ChessBoard.RemovePiece(orig);
+                Piece piece = ChessBoard.GetPiece(orig);
+
+                if (piece is KingPiece &&
+                    (orig.Column + 2 == dest.Column))
+                {
+                    Piece towerPiece = ChessBoard.GetPiece(new Position(orig.Line, orig.Column + 3));
+
+                    ProcessPieceMovement(towerPiece.Position, new Position(orig.Line, orig.Column + 1));
+                }
+                if (piece is KingPiece &&
+                    (orig.Column - 2 == dest.Column))
+                {
+                    Piece towerPiece = ChessBoard.GetPiece(new Position(orig.Line, orig.Column - 4));
+
+                    ProcessPieceMovement(towerPiece.Position, new Position(orig.Line, orig.Column - 1));
+                }
+
+                piece = ChessBoard.RemovePiece(orig);
                 piece.IncreaseMovement();
                 pieceCaptured = ChessBoard.RemovePiece(dest);
                 ChessBoard.PutNewPiece(piece, dest);
@@ -240,8 +279,9 @@ namespace Chess
                 if (pieceCaptured != null)
                 {
                     _PiecesCaptured.Add(pieceCaptured);
-                }
-            }
+                }                
+            }            
+
             return pieceCaptured;
         }
         
