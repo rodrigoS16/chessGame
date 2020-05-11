@@ -8,11 +8,12 @@ namespace Chess
 {
     class ChessMatch
     {
+        public Piece IsVulnerableEnPassant { get; private set; }
         public ChessBoard ChessBoard { get; private set; }
         public int Turn { get; private set; }
         public Color CurrentPlayer { get; private set; }
         public bool IsOver { get; private set; }
-        public bool IsInCheck { get; private set; }
+        public bool IsInCheck { get; private set; }        
 
         private HashSet<Piece> _Pieces;
 
@@ -36,17 +37,17 @@ namespace Chess
             PieceMovement('d', 1, new QueenPiece(ChessBoard, Color.White, true));
             PieceMovement('e', 1, new KingPiece(ChessBoard, Color.White,this, true));
             PieceMovement('f', 1, new BishopPiece(ChessBoard, Color.White, true));
-            PieceMovement('g', 1, new HorsePiece(ChessBoard,  Color.White, true));
-            PieceMovement('h', 1, new TowerPiece(ChessBoard,  Color.White, this, true));
+            PieceMovement('g', 1, new HorsePiece(ChessBoard, Color.White, true));
+            PieceMovement('h', 1, new TowerPiece(ChessBoard, Color.White, this, true));
 
-            PieceMovement('a', 2, new SoldierPiece(ChessBoard, Color.White, true));
-            PieceMovement('b', 2, new SoldierPiece(ChessBoard, Color.White, true));
-            PieceMovement('c', 2, new SoldierPiece(ChessBoard, Color.White, true));
-            PieceMovement('d', 2, new SoldierPiece(ChessBoard, Color.White, true));
-            PieceMovement('e', 2, new SoldierPiece(ChessBoard, Color.White, true));
-            PieceMovement('f', 2, new SoldierPiece(ChessBoard, Color.White, true));
-            PieceMovement('g', 2, new SoldierPiece(ChessBoard,  Color.White, true));
-            PieceMovement('h', 2, new SoldierPiece(ChessBoard,  Color.White, true));
+            PieceMovement('a', 2, new SoldierPiece(ChessBoard, Color.White,this, true));
+            PieceMovement('b', 2, new SoldierPiece(ChessBoard, Color.White,this, true));
+            PieceMovement('c', 2, new SoldierPiece(ChessBoard, Color.White,this, true));
+            PieceMovement('d', 2, new SoldierPiece(ChessBoard, Color.White,this, true));
+            PieceMovement('e', 2, new SoldierPiece(ChessBoard, Color.White,this, true));
+            PieceMovement('f', 2, new SoldierPiece(ChessBoard, Color.White,this, true));
+            PieceMovement('g', 2, new SoldierPiece(ChessBoard, Color.White,this, true));
+            PieceMovement('h', 2, new SoldierPiece(ChessBoard, Color.White,this, true));
 
             PieceMovement('a', 8, new TowerPiece(ChessBoard, Color.Black, this));
             PieceMovement('b', 8, new HorsePiece(ChessBoard, Color.Black));
@@ -57,14 +58,16 @@ namespace Chess
             PieceMovement('g', 8, new HorsePiece(ChessBoard, Color.Black));
             PieceMovement('h', 8, new TowerPiece(ChessBoard, Color.Black, this));
 
-            PieceMovement('a', 7, new SoldierPiece(ChessBoard, Color.Black));
-            PieceMovement('b', 7, new SoldierPiece(ChessBoard, Color.Black));
-            PieceMovement('c', 7, new SoldierPiece(ChessBoard, Color.Black));
-            PieceMovement('d', 7, new SoldierPiece(ChessBoard, Color.Black));
-            PieceMovement('e', 7, new SoldierPiece(ChessBoard, Color.Black));
-            PieceMovement('f', 7, new SoldierPiece(ChessBoard, Color.Black));
-            PieceMovement('g', 7, new SoldierPiece(ChessBoard, Color.Black));
-            PieceMovement('h', 7, new SoldierPiece(ChessBoard, Color.Black));
+            PieceMovement('a', 7, new SoldierPiece(ChessBoard, Color.Black,this));
+            PieceMovement('b', 7, new SoldierPiece(ChessBoard, Color.Black,this));
+            PieceMovement('c', 7, new SoldierPiece(ChessBoard, Color.Black,this));
+            PieceMovement('d', 7, new SoldierPiece(ChessBoard, Color.Black,this));
+            PieceMovement('e', 7, new SoldierPiece(ChessBoard, Color.Black,this));
+            PieceMovement('f', 7, new SoldierPiece(ChessBoard, Color.Black,this));
+            PieceMovement('g', 7, new SoldierPiece(ChessBoard, Color.Black,this));
+            PieceMovement('h', 7, new SoldierPiece(ChessBoard, Color.Black,this));
+
+            IsVulnerableEnPassant = null;
         }
 
         private void Init()
@@ -137,6 +140,7 @@ namespace Chess
             }
             ChessBoard.PutNewPiece(piece, orig);
 
+            //#Special play Roque
             if (piece is KingPiece &&
                 (orig.Column + 2 == dest.Column))
             {
@@ -156,6 +160,28 @@ namespace Chess
                 Piece towerPiece = ChessBoard.RemovePiece(towerPositionDest);
                 towerPiece.DecreaseMovement();
                 ChessBoard.PutNewPiece(towerPiece, towerPositionOrig);
+            }
+            //#Special Play EnPassant
+            //#Special play EnPassant
+
+            if (piece is SoldierPiece
+                && orig.Column != dest.Column
+                && capturedPiece == IsVulnerableEnPassant)
+            {
+                Piece soldierPiece = ChessBoard.RemovePiece(dest);
+                soldierPiece.DecreaseMovement();                
+
+                Position position;
+                if ((piece as SoldierPiece).GetInverseSearch())
+                {
+                    position = new Position(3, dest.Column);
+                }
+                else
+                {
+                    position = new Position(4, dest.Column);
+                }
+                ChessBoard.PutNewPiece(soldierPiece, position);
+                
             }
         }
 
@@ -177,6 +203,14 @@ namespace Chess
             Turn++;
 
             ChangePlayer();
+
+            piece = ChessBoard.GetPiece(dest);
+            //#Special player EnPassant
+            if (piece is SoldierPiece && 
+                (orig.Line == dest.Line + 2 || orig.Line == dest.Line - 2))
+            {
+                IsVulnerableEnPassant = piece;
+            }
         }
 
         public Color GetWinner()
@@ -256,6 +290,7 @@ namespace Chess
             {
                 Piece piece = ChessBoard.GetPiece(orig);
 
+                //#Special play Roque
                 if (piece is KingPiece &&
                     (orig.Column + 2 == dest.Column))
                 {
@@ -270,7 +305,8 @@ namespace Chess
 
                     ProcessPieceMovement(towerPiece.Position, new Position(orig.Line, orig.Column - 1));
                 }
-
+                ///#
+                
                 piece = ChessBoard.RemovePiece(orig);
                 piece.IncreaseMovement();
                 pieceCaptured = ChessBoard.RemovePiece(dest);
@@ -279,7 +315,28 @@ namespace Chess
                 if (pieceCaptured != null)
                 {
                     _PiecesCaptured.Add(pieceCaptured);
-                }                
+                }  
+                //#Special play EnPassant
+                if (piece is SoldierPiece
+                    && orig.Column != dest.Column
+                    && pieceCaptured == null)
+                {
+                    Position position;
+                    if ((piece as SoldierPiece).GetInverseSearch())
+                    {
+                        position = new Position(dest.Line + 1, dest.Column);
+                    }
+                    else
+                    {
+                        position = new Position(dest.Line - 1, dest.Column);
+                    }
+                    pieceCaptured = ChessBoard.RemovePiece(position);
+                    
+                    if (pieceCaptured != null)
+                    {
+                        _PiecesCaptured.Add(pieceCaptured);
+                    }
+                }
             }            
 
             return pieceCaptured;

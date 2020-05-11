@@ -1,13 +1,16 @@
 ﻿using jogo_xadres_console.Tabuleiro;
 using jogo_xadres_console.Tabuleiro.Enums;
+using System;
 
 namespace Chess
 {
     class SoldierPiece : Piece
     {
-        public SoldierPiece(ChessBoard chessBoard, Color color, bool inverseSearch = false) : base(chessBoard, color, inverseSearch)
-        {
+        private ChessMatch _Math;
 
+        public SoldierPiece(ChessBoard chessBoard, Color color, ChessMatch match, bool inverseSearch = false) : base(chessBoard, color, inverseSearch)
+        {
+            _Math = match;
         }
 
         public override string ToString()
@@ -33,6 +36,11 @@ namespace Chess
             }            
         }
 
+        public bool GetInverseSearch()
+        {
+            return InverseSearch;
+        }
+
         public override bool[,] PossibleMoviments(Position pos = null)
         {
             bool[,] mat = new bool[ChessBoard.Lines, ChessBoard.Columns];
@@ -41,7 +49,7 @@ namespace Chess
             int posColumn = Position != null ? Position.Column : pos.Column;
             Position position;
 
-            if (InverseSearch)
+            if (InverseSearch) // line 3
             {
                 RunColumnsMovement(mat, posLine - 1, posColumn);
 
@@ -60,6 +68,29 @@ namespace Chess
                 if (ChessBoard.GetPiece(position) != null && ChessBoard.GetPiece(position).Color != Color)
                 {
                     RunColumnsMovement(mat, position.Line, position.Column);
+                }
+                //#Special Player EnPassant
+                position = new Position(Position.Line, Position.Column-1);
+
+                if (Position.Line == 3
+                    && ChessBoard.IsPositionValid(position)
+                    && ChessBoard.GetPiece(position) != null
+                    && ChessBoard.GetPiece(position).Color != Color
+                    && _Math.IsVulnerableEnPassant == ChessBoard.GetPiece(position))
+                {
+                    mat[position.Line - 1, position.Column] = true;
+                }
+
+                //#Special Player EnPassant
+                position = new Position(Position.Line, Position.Column + 1);
+
+                if (Position.Line == 3
+                    && ChessBoard.IsPositionValid(position)
+                    && ChessBoard.GetPiece(position) != null
+                    && ChessBoard.GetPiece(position).Color != Color
+                    && _Math.IsVulnerableEnPassant == ChessBoard.GetPiece(position))
+                {
+                    mat[position.Line - 1, position.Column] = true;
                 }
             }
             else
@@ -81,6 +112,30 @@ namespace Chess
                 if (ChessBoard.GetPiece(position) != null && ChessBoard.GetPiece(position).Color != Color)
                 {
                     RunColumnsMovement(mat, position.Line, position.Column);
+                }
+
+                //#Special Player EnPassant
+                position = new Position(Position.Line, Position.Column - 1);
+
+                if (Position.Line == 4
+                    && ChessBoard.IsPositionValid(position)
+                    && ChessBoard.GetPiece(position) != null
+                    && ChessBoard.GetPiece(position).Color != Color
+                    && _Math.IsVulnerableEnPassant == ChessBoard.GetPiece(position))
+                {
+                    mat[position.Line + 1, position.Column] = true;
+                }
+
+                //#Special Player EnPassant
+                position = new Position(Position.Line, Position.Column + 1);
+
+                if (Position.Line == 4
+                    && ChessBoard.IsPositionValid(position)
+                    && ChessBoard.GetPiece(position) != null
+                    && ChessBoard.GetPiece(position).Color != Color
+                    && _Math.IsVulnerableEnPassant == ChessBoard.GetPiece(position))
+                {
+                    mat[position.Line + 1, position.Column] = true;
                 }
             }
             return mat;
